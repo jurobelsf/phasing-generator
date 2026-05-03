@@ -98,34 +98,102 @@
   The interval score table used in the current implementation is:
 </p>
 
-<pre><code>interval_score = {
+<table>
+  <thead>
+    <tr>
+      <th>Semitone Difference</th>
+      <th>Interval Name</th>
+      <th>Perception</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
 
-    # unison
-    0: 0.6,
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Unison</td>
+      <td>Neutral / stable</td>
+      <td>0.60</td>
+    </tr>
 
-    # seconds
-    1: 0.55,
-    2: 0.6,
+    <tr>
+      <td>1</td>
+      <td>Minor Second</td>
+      <td>Tense</td>
+      <td>0.55</td>
+    </tr>
 
-    # thirds
-    3: 0.65,
-    4: 0.6,
+    <tr>
+      <td>2</td>
+      <td>Major Second</td>
+      <td>Open / floating</td>
+      <td>0.60</td>
+    </tr>
 
-    # fourth / fifth
-    5: 0.7,
-    7: 0.65,
+    <tr>
+      <td>3</td>
+      <td>Minor Third</td>
+      <td>Cold / melancholic</td>
+      <td>0.65</td>
+    </tr>
 
-    # sixths
-    8: 0.7,
-    9: 0.65,
+    <tr>
+      <td>4</td>
+      <td>Major Third</td>
+      <td>Bright</td>
+      <td>0.60</td>
+    </tr>
 
-    # sevenths
-    10: 0.6,
-    11: 0.6,
+    <tr>
+      <td>5</td>
+      <td>Perfect Fourth</td>
+      <td>Stable</td>
+      <td>0.70</td>
+    </tr>
 
-    # tritone
-    6: 0.75
-}</code></pre>
+    <tr>
+      <td>6</td>
+      <td>Tritone</td>
+      <td>Ambiguous / tense</td>
+      <td>0.75</td>
+    </tr>
+
+    <tr>
+      <td>7</td>
+      <td>Perfect Fifth</td>
+      <td>Stable</td>
+      <td>0.65</td>
+    </tr>
+
+    <tr>
+      <td>8</td>
+      <td>Minor Sixth</td>
+      <td>Warm</td>
+      <td>0.70</td>
+    </tr>
+
+    <tr>
+      <td>9</td>
+      <td>Major Sixth</td>
+      <td>Soft</td>
+      <td>0.65</td>
+    </tr>
+
+    <tr>
+      <td>10</td>
+      <td>Minor Seventh</td>
+      <td>Tense</td>
+      <td>0.60</td>
+    </tr>
+
+    <tr>
+      <td>11</td>
+      <td>Major Seventh</td>
+      <td>Sharp / unstable</td>
+      <td>0.60</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>
   Naturally, there is no single “correct” way to assign these weights. 
