@@ -3,7 +3,7 @@ Optional visualization module.
 
 Requires:
 
-pip install musicntwrk music21 pygame
+pip install musicntwrk
 
 For score rendering you may also need MuseScore:
 https://musescore.org
