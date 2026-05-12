@@ -1,0 +1,94 @@
+# =========================
+# SUMMARY STATISTICS
+# =========================
+
+scores = []
+
+for i in range(n_candidates):
+
+    tonic = random.choice(tonics)
+
+    scale_type = random.choice(scale_types)
+
+    montecarlo_scale = get_scale(tonic, scale_type)
+
+    seq = random_sequence(montecarlo_scale)
+
+    result = total_score(seq)
+
+    scores.append(result)
+
+
+
+scores = np.array(scores)
+
+mean_score = np.mean(scores)
+
+median_score = np.median(scores)
+
+std_score = np.std(scores)
+
+max_score = np.max(scores)
+
+min_score = np.min(scores)
+
+# Pearson moment skewness
+skewness = np.mean(
+    ((scores - mean_score) / std_score) ** 3
+)
+
+print("\nSUMMARY STATISTICS\n")
+
+print("Mean score:", round(mean_score, 4))
+
+print("Median score:", round(median_score, 4))
+
+print("Standard deviation:", round(std_score, 4))
+
+print("Skewness:", round(skewness, 4))
+
+print("Maximum score:", round(max_score, 4))
+
+print("Minimum score:", round(min_score, 4))
+
+
+# =========================
+# SCORE DISTRIBUTION
+# =========================
+
+plt.figure(figsize=(10, 6))
+
+plt.hist(
+    scores,
+    bins = round(np.sqrt(n_candidates)), #for better visualization
+    color="#5c60aa",
+    alpha=0.85
+)
+
+# mean line
+plt.axvline(
+    mean_score,
+    color="#9df57a",
+    linestyle="-",
+    linewidth=3,
+    label=f"Mean = {mean_score:.4f}"
+)
+
+# median line
+plt.axvline(
+    median_score,
+    color="#9df57a",
+    linestyle="--",
+    linewidth=3,
+    label=f"Median = {median_score:.4f}"
+)
+
+plt.xlabel("Score")
+
+plt.ylabel("Frequency")
+
+plt.title("Distribution of Generated Scores")
+
+plt.legend()
+
+plt.show()
