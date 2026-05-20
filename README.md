@@ -1,296 +1,183 @@
-<h1>Phasing Generator</h1>
+# Phasing Generator
 
-<h2>Table of Contents</h2>
+## Table of Contents
 
-<ul>
-  <li><a href="#description">Description</a></li>
-  <li><a href="#code-overview">Code Overview</a>
-    <ul>
-      <li><a href="#score-function">Score Function</a></li>
-      <li><a href="#monte-carlo-convergence">Monte Carlo Convergence</a></li>
-    </ul>
-  </li>
-  <li><a href="#example">Example</a></li>
-</ul>
+* [Description](#description)
+* [Code Overview](#code-overview)
 
-<hr>
+  * [Score Function](#score-function)
+  * [Monte Carlo Convergence Analysis](#monte-carlo-convergence-analysis)
 
-<h1 id="description">Description</h1>
+* [Example](#example)
 
-<p>
-<i>Piano Phase</i> is a famous musical work by
-<a href="https://en.wikipedia.org/wiki/Steve_Reich">Steve Reich</a>.
-</p>
+---
 
-<p>
+# Description
+
+*Piano Phase* is a famous musical work by [Steve Reich](https://en.wikipedia.org/wiki/Steve_Reich).
+
 The idea behind the piece is relatively simple: two pianists begin by playing the exact same sequence of notes. One performer keeps repeating the sequence unchanged, while the other gradually shifts out of phase by rotating the sequence over time, until both performers eventually realign.
-</p>
 
-<p>
 Even though the concept is simple, the resulting texture is highly hypnotic and constantly evolving.
-</p>
 
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=i0345c6zNfM">
-    <img src="https://img.youtube.com/vi/i0345c6zNfM/maxresdefault.jpg" width="700">
-  </a>
-</p>
+[![Piano Phase — Steve Reich](https://img.youtube.com/vi/i0345c6zNfM/maxresdefault.jpg)](https://www.youtube.com/watch?v=i0345c6zNfM)
 
-<p>
 As you might imagine, the brilliance of the piece comes from the fact that not every melodic sequence sounds good when played simultaneously against all of its possible rotations. Finding a sequence that works well under every phase shift can become a very tedious task — so this project approaches the problem algorithmically.
-</p>
 
-<p>
-This project is a sequence generator specifically designed to create pieces inspired by <i>Piano Phase</i>, using randomized simulation and musical scoring heuristics.
-</p>
+This project is a sequence generator specifically designed to create pieces inspired by *Piano Phase*, using randomized simulation and musical scoring heuristics.
 
-<hr>
+---
 
-<h1 id="code-overview">Code Overview</h1>
+# Code Overview
 
-<p>The user provides the following inputs:</p>
+The user provides the following inputs:
 
-<ul>
-  <li>The number of notes in the sequence</li>
-  <li>Whether to manually choose a musical scale or let the program select one randomly</li>
-  <li>The rhythmic duration of the notes</li>
-  <li>The number of simulations (<i>k</i>)</li>
-</ul>
+* The number of notes in the sequence
+* Whether to manually choose a musical scale or let the program select one randomly
+* The rhythmic duration of the notes
+* The number of simulations (*k*)
 
-<p>
-The program generates <i>k</i> random sequences and evaluates them using a custom score function that estimates how well the sequence behaves under phasing transformations.
-</p>
+The program generates *k* random sequences and evaluates them using a custom score function that estimates how well the sequence behaves under phasing transformations.
 
-<p>The final output includes:</p>
+The final output includes:
 
-<ul>
-  <li>A functional sequence for generating a <i>Piano Phase</i>-style piece, both as MIDI note numbers and symbolic note notation</li>
-  <li>A <code>.mid</code> file ready to import into any DAW or notation software</li>
-</ul>
+* A functional sequence for generating a *Piano Phase*-style piece, both as MIDI note numbers and symbolic note notation
+* A `.mid` file ready to import into any DAW or notation software
 
-<hr>
+---
 
-<h2 id="score-function">Score Function</h2>
+## Score Function
 
-<p>
 What does it mean for a sequence to “sound good” in this context?
-</p>
 
-<p>
 The main metric comes from assigning a score to the intervallic difference (measured in MIDI semitones) between notes played simultaneously by the two phased sequences.
-</p>
 
-<p>
 The interval weighting system is inspired by psychoacoustic and music-theoretical models of consonance and dissonance. Intervals are assigned continuous weights based on perceived stability, tension, and spectral roughness rather than strict tonal hierarchy.
-</p>
 
-<p>The interval score table used in the current implementation is:</p>
+The interval score table used in the current implementation is:
 
-<table>
-  <tr>
-    <th>Semitone Difference</th>
-    <th>Interval Name</th>
-    <th>Perception</th>
-    <th>Weight</th>
-  </tr>
-  <tr><td>0</td><td>Unison</td><td>Neutral / stable</td><td>0.60</td></tr>
-  <tr><td>1</td><td>Minor Second</td><td>Tense</td><td>0.55</td></tr>
-  <tr><td>2</td><td>Major Second</td><td>Open / floating</td><td>0.60</td></tr>
-  <tr><td>3</td><td>Minor Third</td><td>Cold / melancholic</td><td>0.65</td></tr>
-  <tr><td>4</td><td>Major Third</td><td>Bright</td><td>0.60</td></tr>
-  <tr><td>5</td><td>Perfect Fourth</td><td>Stable</td><td>0.70</td></tr>
-  <tr><td>6</td><td>Tritone</td><td>Ambiguous / tense</td><td>0.75</td></tr>
-  <tr><td>7</td><td>Perfect Fifth</td><td>Stable</td><td>0.65</td></tr>
-  <tr><td>8</td><td>Minor Sixth</td><td>Warm</td><td>0.70</td></tr>
-  <tr><td>9</td><td>Major Sixth</td><td>Soft</td><td>0.65</td></tr>
-  <tr><td>10</td><td>Minor Seventh</td><td>Tense</td><td>0.60</td></tr>
-  <tr><td>11</td><td>Major Seventh</td><td>Sharp / unstable</td><td>0.60</td></tr>
-</table>
+| Semitone Difference | Interval Name  | Perception         | Weight |
+| ------------------- | -------------- | ------------------ | ------ |
+| 0                   | Unison         | Neutral / stable   | 0.60   |
+| 1                   | Minor Second   | Tense              | 0.55   |
+| 2                   | Major Second   | Open / floating    | 0.60   |
+| 3                   | Minor Third    | Cold / melancholic | 0.65   |
+| 4                   | Major Third    | Bright             | 0.60   |
+| 5                   | Perfect Fourth | Stable             | 0.70   |
+| 6                   | Tritone        | Ambiguous / tense  | 0.75   |
+| 7                   | Perfect Fifth  | Stable             | 0.65   |
+| 8                   | Minor Sixth    | Warm               | 0.70   |
+| 9                   | Major Sixth    | Soft               | 0.65   |
+| 10                  | Minor Seventh  | Tense              | 0.60   |
+| 11                  | Major Seventh  | Sharp / unstable   | 0.60   |
 
-<p>
 Naturally, there is no single “correct” way to assign these weights.
-</p>
 
-<p>
 The interval values used here are intentionally non-tonal and were tuned empirically to generate minimalist phasing textures closer to Steve Reich’s aesthetic rather than traditional tonal harmony.
-</p>
 
-<p>
 One of the most interesting aspects of the project is that the user can freely modify these weights to create completely different musical moods — for example, making the generated material brighter, darker, more tense, more unstable, or more unpredictable.
-</p>
 
-<p>
-For users interested in experimenting further with consonance/dissonance models, I strongly recommend reading
-<a href="https://www.researchgate.net/publication/276905584_Measuring_Musical_Consonance_and_Dissonance">
-this paper
-</a>.
-</p>
+For users interested in experimenting further with consonance/dissonance models, I strongly recommend reading [this paper](https://www.researchgate.net/publication/276905584_Measuring_Musical_Consonance_and_Dissonance).
 
-<p>
 In addition to the interval weighting system, the score function also evaluates:
-</p>
 
-<ul>
-  <li>Pitch variety</li>
-  <li>Intervallic variety (diversity in melodic jumps)</li>
-  <li>A repetition penalty to avoid excessive repeated notes</li>
-</ul>
+* Pitch variety
+* Intervallic variety (diversity in melodic jumps)
+* A repetition penalty to avoid excessive repeated notes
 
-<p>
 The code is thoroughly documented so users can easily tweak the relative weights of each metric and explore different musical behaviors.
-</p>
 
-<hr>
+---
 
-<h2 id="monte-carlo-convergence">Monte Carlo Convergence</h2>
+## Monte Carlo Convergence Analysis
 
-<p>
-As expected, increasing the number of simulations generally leads to higher maximum scores, meaning that the algorithm is more likely to discover musically stronger sequences.
-</p>
-
-<p>
-However, this improvement eventually reaches a point of diminishing returns, where additional simulations produce only negligible improvements in the best score found.
-</p>
-
-<p>
-This behavior can be observed empirically in the convergence curves below.
-</p>
-
-<p>
-Different Monte Carlo runs exhibit the same qualitative behavior, although each run reaches stagnation at a slightly different simulation count.
-</p>
-
-<p>
-To formalize convergence, let
-</p>
+As expected, increasing the number of simulations generally leads to higher maximum scores, meaning that the algorithm is more likely to discover musically “better” sequences. However, this improvement only occurs up to a certain point, after which the maximum score begins to stabilize, as illustrated in the following figure:
 
 <p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20S_{\max}(N)=\max\{S_1,S_2,\dots,S_N\}">
+  <i>[Insert convergence figure here]</i>
 </p>
 
-<p>
-denote the best score found after <i>N</i> simulations.
-</p>
+Different runs produce curves with the same overall behavior, although the stabilization point varies due to the stochastic nature of the algorithm. To formally define convergence, we introduce a **stagnation-based stopping criterion**.
 
-<p>
-We then define the score improvement over an additional window of <i>k</i> simulations as
-</p>
+Let
 
-<p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20\Delta%20S=S_{\max}(N+k)-S_{\max}(N)">
-</p>
+$$S_{\max}(N) = \max\{S_1,S_2,\dots,S_N\}$$
 
-<p>
+denote the best score found after $N$ simulations.
+
+We then define the score improvement over an additional window of $k$ simulations as
+
+$$\Delta S = S_{\max}(N+k) - S_{\max}(N)$$
+
 where:
-</p>
 
-<ul>
-  <li><i>N</i> is the current number of simulations,</li>
-  <li><i>k</i> is a fixed future simulation window,</li>
-  <li><i>\Delta S</i> measures the improvement in the best score after continuing the search.</li>
-</ul>
+* $N$ is the current number of simulations,
+* $k$ is a fixed future simulation window,
+* $\Delta S$ measures the improvement in the best score after continuing the search.
 
-<p>
 We say that the algorithm has converged whenever
-</p>
 
-<p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20\Delta%20S<\varepsilon">
-</p>
+$$\Delta S < \varepsilon$$
 
-<p>
-for some sufficiently small threshold <i>\(\varepsilon > 0\)</i>.
-</p>
+for some sufficiently small threshold $\varepsilon > 0$. Intuitively, this means that further simulations no longer produce significant improvements in the best sequence found.
 
-<p>
-This criterion is commonly known in Monte Carlo optimization literature as a
-<b>Stagnation-based Stopping Criterion</b>.
-</p>
-
-<p>
-Intuitively, it means that further simulations are no longer producing meaningful improvements in the best sequence found.
-</p>
-
-<p>
 Using:
-</p>
 
-<ul>
-  <li>500 independent Monte Carlo runs,</li>
-  <li>a convergence window of <i>k = 500</i> simulations,</li>
-  <li>and a threshold of <i>\(\varepsilon = 0.001\)</i>,</li>
-</ul>
+* number of runs = 500,
+* window size $k = 500$,
+* convergence threshold $\varepsilon = 0.001$,
 
-<p>
-the following convergence statistics were obtained:
-</p>
+(the code is fully configurable, so users may freely modify these parameters), we obtain the following results:
 
-<ul>
-  <li>Mean convergence simulation: 357.41</li>
-  <li>Median convergence simulation: 302.5</li>
-  <li>Standard deviation: 292.36</li>
-</ul>
-
-<p>
-Since the true distribution of the convergence time is unknown, we estimate the expected convergence time using the Central Limit Theorem.
-</p>
-
-<p>
-Let \(T_c\) denote the convergence simulation index obtained from each independent Monte Carlo run.
-Given a sufficiently large number of runs (\(n = 500\)), the sampling distribution of the sample mean approaches a normal distribution:
+<p align="center">
+  <i>[Insert Monte Carlo statistics image here]</i>
 </p>
 
 <p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20\bar{T}_c\approx\mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right)">
+  <i>[Insert convergence distribution image here]</i>
 </p>
 
-<p>
-Therefore, a 95% confidence interval for the expected convergence time can be constructed as:
-</p>
+Let $T_c$ denote the convergence time, i.e., the number of simulations required for the stopping criterion to be satisfied.
 
-<p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20\bar{T}_c\pm1.96\frac{s}{\sqrt{n}}">
-</p>
+Since each Monte Carlo run produces a different value of $T_c$, the convergence time itself is treated as a random variable.
 
-<p>
-Substituting the observed statistics:
-</p>
+Although the underlying distribution of $T_c$ is unknown, the use of 500 independent Monte Carlo runs allows us to invoke the **Central Limit Theorem (CLT)**. Therefore, the sampling distribution of the sample mean converges in distribution to a Gaussian distribution, making it possible to construct a confidence interval for the expected convergence time.
 
-<p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20357.41\pm1.96\frac{292.36}{\sqrt{500}}">
-</p>
+The standard error is given by
 
-<p>
-which yields:
-</p>
+$$SE = \frac{\hat{\sigma}}{\sqrt{n}}$$
 
-<p align="center">
-<img src="https://latex.codecogs.com/png.image?\dpi{150}\Large%20331.77\leq\mathbb{E}[T_c]\leq383.05">
-</p>
+where:
 
-<p>
-Hence, we estimate the expected convergence time of the algorithm to be approximately <b>357 simulations</b>, with a 95% confidence interval ranging from approximately <b>332</b> to <b>383</b> simulations.
-</p>
+* $\hat{\sigma}$ is the sample standard deviation,
+* $n$ is the number of independent Monte Carlo runs.
 
-<hr>
+A 95% confidence interval for the expected convergence time is therefore:
 
-<h1 id="example">Example</h1>
+$$\hat{\mu}_{T_c} \pm 1.96 \cdot \frac{\hat{\sigma}}{\sqrt{n}}$$
 
-<p>
-Below is an example generated by the algorithm and rendered using the <code>musicntwrk</code> library by
-<a href="https://github.com/marcobn">@marcobn</a>.
-</p>
+Using the observed statistics:
 
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=ZZha3PtBrdY">
-    <img src="https://img.youtube.com/vi/ZZha3PtBrdY/maxresdefault.jpg" width="700">
-  </a>
-</p>
+* $\hat{\mu}_{T_c} = 357.41$
+* $\hat{\sigma}_{T_c} = 292.36$
+* $n = 500$
 
-<p>
-The video demonstrates how a single generated sequence evolves through progressive phase shifting, creating constantly changing rhythmic and harmonic interactions from extremely limited material.
-</p>
+we estimate the expected convergence time to be:
 
-<p>
-To visualize the generated phasing structure as notation and MIDI playback, see <code>visualize.py</code>.
-</p>
+$$\mathbb{E}[T_c] \approx 357.41$$
+
+with the following 95% confidence interval:
+
+$$331.77 \leq \mathbb{E}[T_c] \leq 383.05$$
+
+This result suggests that, under repeated Monte Carlo trials, the algorithm typically reaches practical convergence after approximately 350 simulations, after which additional simulations produce only marginal improvements in the maximum score.
+
+---
+
+# Example
+
+Below is an example generated by the algorithm and rendered using the `musicntwrk` library by [@marcobn](https://github.com/marcobn).
+
+[![Generated Piano Phase Example](https://img.youtube.com/vi/ZZha3PtBrdY/maxresdefault.jpg)](https://www.youtube.com/watch?v=ZZha3PtBrdY)
+
+The video demonstrates how a single generated sequence evolves through progressive phase shifting, creating constantly changing rhythmic and harmonic interactions from extremely limited material. To visualize the generated phasing structure as notation and MIDI playback, see `visualize.py`.
