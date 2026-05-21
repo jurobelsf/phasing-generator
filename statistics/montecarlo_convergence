@@ -1,0 +1,151 @@
+
+# =========================
+# MONTE CARLO CONVERGENCE
+# =========================
+
+#Remember you can always change the following parameters!
+
+n_runs = 500 
+
+window_k = 500
+
+epsilon = 0.001
+
+
+
+
+all_best_scores = []
+
+convergence_points = []
+
+
+# =========================
+# MULTIPLE MONTE CARLO RUNS
+# =========================
+
+for run in range(n_runs):
+
+    best_scores = []
+
+    best_so_far = -np.inf
+
+    for i in range(n_candidates):
+
+        tonic = random.choice(tonics)
+
+        scale_type = random.choice(scale_types)
+
+        scale = get_scale(tonic, scale_type)
+
+        seq = random_sequence(scale)
+
+        score = total_score(seq)
+
+        if score > best_so_far:
+
+            best_so_far = score
+
+        best_scores.append(best_so_far)
+
+    best_scores = np.array(best_scores)
+
+    all_best_scores.append(best_scores)
+
+
+    # =========================
+    # CONVERGENCE DETECTION
+    # =========================
+
+    converged = False
+
+    for N in range(n_candidates - window_k):
+
+        delta_s = (
+            best_scores[N + window_k]
+            -
+            best_scores[N]
+        )
+
+        if delta_s < epsilon:
+
+            convergence_points.append(N)
+
+            converged = True
+
+            break
+
+    # if never converged
+    if not converged:
+
+        convergence_points.append(n_candidates)
+
+
+all_best_scores = np.array(all_best_scores)
+
+
+# =========================
+# CONVERGENCE STATISTICS
+# =========================
+
+mean_convergence = np.mean(convergence_points)
+
+median_convergence = np.median(convergence_points)
+
+std_convergence = np.std(convergence_points)
+
+
+print("\nMONTE CARLO CONVERGENCE ANALYSIS\n")
+
+print("Window size k:", window_k)
+
+print("Convergence threshold epsilon:", epsilon)
+
+print(
+    "Mean convergence simulation:",
+    round(mean_convergence, 2)
+)
+
+print(
+    "Median convergence simulation:",
+    round(median_convergence, 2)
+)
+
+print(
+    "Std. deviation:",
+    round(std_convergence, 2)
+)
+
+
+# =========================
+# CONVERGENCE DISTRIBUTION
+# =========================
+
+plt.figure(figsize=(10, 6))
+
+plt.hist(
+    convergence_points,
+    bins=15,
+    color="#5c60aa",
+    alpha=0.85
+)
+
+plt.axvline(
+    mean_convergence,
+    color="#9df57a",
+    linewidth=3,
+    label=f"Mean = {mean_convergence:.0f}"
+)
+
+plt.xlabel("Simulation where convergence occurs")
+
+plt.ylabel("Frequency")
+
+plt.title("Distribution of Convergence Times")
+
+plt.legend()
+
+plt.grid(alpha=0.25)
+
+plt.show()
+
+
