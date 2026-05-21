@@ -155,9 +155,9 @@ $$
 S_{\max}(N) = \max\{S_1,S_2,\dots,S_N\}
 $$
 
-denote the best score found after \(N\) simulations.
+denote the best score found after $N$ simulations.
 
-We then define the score improvement over an additional window of \(k\) simulations as
+We then define the score improvement over an additional window of $k$ simulations as
 
 $$
 \Delta S = S_{\max}(N+k) - S_{\max}(N)
@@ -165,9 +165,9 @@ $$
 
 where:
 
-* \(N\) is the current number of simulations,
-* \(k\) is a fixed future simulation window,
-* \(\Delta S\) measures the improvement in the best score after continuing the search.
+* $N$ is the current number of simulations,
+* $k$ is a fixed future simulation window,
+* $\Delta S$ measures the improvement in the best score after continuing the search.
 
 We say that the algorithm has converged whenever
 
@@ -175,15 +175,15 @@ $$
 \Delta S < \varepsilon
 $$
 
-for some sufficiently small threshold \(\varepsilon > 0\).
+for some sufficiently small threshold $\varepsilon > 0$.
 
 Intuitively, this means that further simulations no longer produce significant improvements in the best sequence found.
 
 Using:
 
 * number of runs = 500,
-* window size \(k = 500\),
-* convergence threshold \(\varepsilon = 0.001\),
+* window size $k = 500$,
+* convergence threshold $\varepsilon = 0.001$,
 
 (the code is fully configurable, so users may freely modify these parameters), we obtain the following results:
 
@@ -195,11 +195,11 @@ Using:
   <img src="imagess/4.jpeg" alt="Monte Carlo Convergence Curves" width="800px">
 </p>
 
-Let \(T_c\) denote the convergence time, i.e., the number of simulations required for the stopping criterion to be satisfied.
+Let $T_c$ denote the convergence time, i.e., the number of simulations required for the stopping criterion to be satisfied.
 
-Since each Monte Carlo run produces a different value of \(T_c\), the convergence time itself is treated as a random variable.
+Since each Monte Carlo run produces a different value of $T_c$, the convergence time itself is treated as a random variable.
 
-Although the underlying distribution of \(T_c\) is unknown, the use of 500 independent Monte Carlo runs allows us to invoke the **Central Limit Theorem (CLT)**.
+Although the underlying distribution of $T_c$ is unknown, the use of 500 independent Monte Carlo runs allows us to invoke the **Central Limit Theorem (CLT)**.
 
 Therefore, the sampling distribution of the sample mean converges in distribution to a Gaussian distribution, making it possible to construct a confidence interval for the expected convergence time.
 
@@ -211,8 +211,8 @@ $$
 
 where:
 
-* \(\hat{\sigma}\) is the sample standard deviation,
-* \(n\) is the number of independent Monte Carlo runs.
+* $\hat{\sigma}$ is the sample standard deviation,
+* $n$ is the number of independent Monte Carlo runs.
 
 A 95% confidence interval for the expected convergence time is therefore:
 
@@ -222,9 +222,9 @@ $$
 
 Using the observed statistics:
 
-* \(\hat{\mu}_{T_c} = 357.41\)
-* \(\hat{\sigma}_{T_c} = 292.36\)
-* \(n = 500\)
+* $\hat{\mu}_{T_c} = 357.41$
+* $\hat{\sigma}_{T_c} = 292.36$
+* $n = 500$
 
 we estimate the expected convergence time to be:
 
