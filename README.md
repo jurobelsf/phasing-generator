@@ -90,15 +90,13 @@ The code is thoroughly documented so users can easily tweak the relative weights
 
 ---
 
-## Statistical Analysis of the Search Space
+## Statistical Analysis
 
 The main script is designed to find the highest-scoring sequence among a large set of randomly generated candidates.
 
 However, an important question naturally arises:
 
-<p align="center">
 <i>What does the space of generated sequences actually look like statistically?</i>
-</p>
 
 To investigate this, we performed 10,000 simulations using the random search mode on sequences of fixed length 12.
 
@@ -129,19 +127,13 @@ Plotting the empirical score distribution produced the following result:
 
 The distribution resembles a kind of *comb distribution*: globally, it approximately follows a negatively skewed normal distribution, but locally it appears fragmented into multiple smaller bell-shaped regions.
 
-This behavior likely emerges from the discrete combinatorial structure of the score function and the finite interval vocabulary used in the evaluation process.
-
 Regardless of this unusual structure, one important fact becomes immediately clear:
 
-<p align="center">
 <b>High-scoring sequences are extremely rare.</b>
-</p>
 
 This observation motivates the following practical question:
 
-<p align="center">
 <i>How many simulations are actually necessary before the search process effectively stops improving?</i>
-</p>
 
 To answer this question, we performed a Monte Carlo convergence analysis based on extreme-value stabilization of the best score found during the search process.
 
