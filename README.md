@@ -130,11 +130,11 @@ Using:
 (the code is fully configurable, so users may freely modify these parameters), we obtain the following results:
 
 <p align="center">
-  <img src="3.jpeg" alt="Score Convergence Plot" width="600px">
+  <img src="imagess/3.jpeg" alt="e" width="600px">
 </p>
 
 <p align="center">
-  <img src="4.jpeg" alt="Score Convergence Plot" width="600px">
+  <img src="imagess/4.jpeg" alt="ee" width="600px">
 </p>
 
 Let $T_c$ denote the convergence time, i.e., the number of simulations required for the stopping criterion to be satisfied.
