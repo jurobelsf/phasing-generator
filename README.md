@@ -94,7 +94,7 @@ The code is thoroughly documented so users can easily tweak the relative weights
 As expected, increasing the number of simulations generally leads to higher maximum scores, meaning that the algorithm is more likely to discover musically “better” sequences. However, this improvement only occurs up to a certain point, after which the maximum score begins to stabilize, as illustrated in the following figure:
 
 <p align="center">
-  <img src="imagess/2.png" alt="Score Convergence Plot" width="600px">
+  <img src="imagess/2.jpeg" alt="Score Convergence Plot" width="600px">
 </p>
 
 Different runs produce curves with the same overall behavior, although the stabilization point varies due to the stochastic nature of the algorithm. To formally define convergence, we introduce a **stagnation-based stopping criterion**.
