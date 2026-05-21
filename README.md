@@ -6,7 +6,10 @@
 * [Code Overview](#code-overview)
 
   * [Score Function](#score-function)
-  * [Statistical Analysis](#statistical-analysis)
+
+* [Statistical Analysis](#statistical-analysis)
+
+  * [Score Distribution](#score-distribution)
   * [Monte Carlo Convergence Analysis](#monte-carlo-convergence-analysis)
 
 * [Example](#example)
@@ -90,7 +93,9 @@ The code is thoroughly documented so users can easily tweak the relative weights
 
 ---
 
-## Statistical Analysis
+# Statistical Analysis
+
+## Score Distribution
 
 The main script is designed to find the highest-scoring sequence among a large set of randomly generated candidates.
 
