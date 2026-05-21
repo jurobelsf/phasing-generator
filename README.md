@@ -6,7 +6,7 @@
 * [Code Overview](#code-overview)
 
   * [Score Function](#score-function)
-  * [Statistical Analysis of the Search Space](#statistical-analysis-of-the-search-space)
+  * [Statistical Analysis](#statistical-analysis)
   * [Monte Carlo Convergence Analysis](#monte-carlo-convergence-analysis)
 
 * [Example](#example)
