@@ -200,11 +200,13 @@ Using:
   <img src="imagess/4.jpeg" alt="Monte Carlo Convergence Curves" width="800px">
 </p>
 
-Let (T_c) denote the convergence time of a single Monte Carlo run, i.e., the number of simulations required for the stopping criterion to be satisfied in that run.
+Let \(T_c\) denote the convergence time of a single Monte Carlo run, i.e., the number of simulations required for the stopping criterion to be satisfied in that run.
 
-Since each Monte Carlo run produces a different value of (T_c), the convergence time is treated as a random variable. The objective of this analysis is not to estimate the convergence time of an individual run, but rather the **expected convergence time** (\mathbb{E}[T_c]) across repeated Monte Carlo trials.
+Since each Monte Carlo run produces a different value of \(T_c\), the convergence time is treated as a random variable. The objective of this analysis is not to estimate the convergence time of an individual run, but rather the **expected convergence time** \(\mathbb{E}[T_c]\) across repeated Monte Carlo trials.
 
-Although the underlying distribution of (T_c) is unknown, the use of 500 independent Monte Carlo runs allows us to invoke the **Central Limit Theorem (CLT)**. Therefore, the sampling distribution of the sample mean converges in distribution to a Gaussian distribution, making it possible to construct a confidence interval for the expected convergence time.
+Although the underlying distribution of \(T_c\) is unknown, the use of 500 independent Monte Carlo runs allows us to invoke the **Central Limit Theorem (CLT)**.
+
+Therefore, the sampling distribution of the sample mean converges in distribution to a Gaussian distribution, making it possible to construct a confidence interval for the expected convergence time.
 
 The standard error is given by
 
@@ -214,8 +216,8 @@ $$
 
 where:
 
-* (\hat{\sigma}) is the sample standard deviation of the observed convergence times,
-* (n) is the number of independent Monte Carlo runs.
+* \(\hat{\sigma}\) is the sample standard deviation of the observed convergence times,
+* \(n\) is the number of independent Monte Carlo runs.
 
 A 95% confidence interval for the expected convergence time is therefore:
 
@@ -225,9 +227,9 @@ $$
 
 Using the observed statistics:
 
-* (\hat{\mu}_{T_c} = 357.41)
-* (\hat{\sigma}_{T_c} = 292.36)
-* (n = 500)
+* \(\hat{\mu}_{T_c} = 357.41\)
+* \(\hat{\sigma}_{T_c} = 292.36\)
+* \(n = 500\)
 
 we estimate the expected convergence time as:
 
@@ -242,7 +244,6 @@ $$
 $$
 
 This result indicates that, across repeated Monte Carlo trials, the algorithm reaches practical convergence after approximately 350 simulations **on average**. After this point, additional simulations typically provide only marginal improvements in the maximum score found by the search process.
-
 
 ---
 
